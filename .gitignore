@@ -1,1 +1,7 @@
 __pycache__/speedrunner_consts.cpython-37.pyc
+seed_data.csv
+__pycache__/speedrunner_db_utilities.cpython-37.pyc
+__pycache__/speedrunner_db.cpython-37.pyc
+__pycache__/speedrunner_games_helper.cpython-37.pyc
+__pycache__/speedrunner_player_helper.cpython-37.pyc
+__pycache__/speedrunner_speedrun_helper.cpython-37.pyc

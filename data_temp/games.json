@@ -1,0 +1,29 @@
+{
+    "games":
+    [
+        {
+            "game_title":"Sonic",
+            "categories": 
+            [
+                "Any%",
+                "120 Star"
+            ]
+        },
+        {
+            "game_title":"FIFA",
+            "categories": 
+            [
+                "Inbounds",
+                "True Ending"
+            ]
+        },
+        {
+            "game_title":"Forza",
+            "categories": 
+            [
+                "Any%",
+                "True Ending"
+            ]
+        }
+    ]
+}

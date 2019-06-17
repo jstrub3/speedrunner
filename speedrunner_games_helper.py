@@ -12,6 +12,25 @@ def get_games_by_category(games_database, category):
             return_games.append(game)
     return return_games
 
+def get_game_categories(games_database, title):
+    for game in games_database['games']:
+        if game['game_title'] == title:
+            return game['categories']
+
+def get_categories(games_database):
+    return_categories = []
+    for game in games_database['games']:
+        for category in game['categories']:
+            return_categories.append(category)
+    return_categories = list(set(return_categories))
+    return return_categories
+
+def get_titles(games_database):
+    return_game_titles = []
+    for game in games_database['games']:
+        return_game_titles.append(game['game_title'])
+    return return_game_titles
+
 def add_or_update_game(games_database, title, category):
     for game in games_database['games']:
         if game['game_title'] == title:

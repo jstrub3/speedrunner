@@ -17,27 +17,16 @@ def home():
     return "<p>Speedrunner API initialized successfully</p>"
 
 @app.route('/games/titles/all', methods=['GET'])
-def game_titles_all():
-    return_game_titles = []
-    for game in databases['games']['games']:
-        return_game_titles.append(game['game_title'])
-    
-    return jsonify(return_game_titles)
+def game_titles_all():    
+    return jsonify(games_helper.get_titles(databases['games']))
 
 @app.route('/games/categories/', methods=['GET'])
 def game_categories_all():
-    return_categories = []
-    for game in databases['games']['games']:
-        for category in game['categories']:
-            return_categories.append(category)
-    return_categories = list(set(return_categories))
-    return jsonify(return_categories)
+    return jsonify(games_helper.get_categories(databases['games']))
 
 @app.route('/games/categories/<string:game_title>', methods=['GET'])
 def game_categories(game_title):
-    for game in databases['games']['games']:
-        if game['game_title'] == game_title:
-            return jsonify(game['categories'])
+    return jsonify(games_helper.get_game_categories(databases['games'], game_title))
 
     
 def initialize_databases():

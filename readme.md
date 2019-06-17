@@ -6,6 +6,10 @@ install pip from https://pip.pypa.io/en/stable/installing/
 install packages
 pip install flask flask-jsonpify
 
+seed data in the form of a csv can be used to init the databases, place in root and define file name in speedrunner_consts.py
+
+start the server by running the following command on the terminal:
+python .\speedrunner_server.py
 
 data model:
 Speedrun

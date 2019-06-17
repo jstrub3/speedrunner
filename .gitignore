@@ -5,3 +5,6 @@ __pycache__/speedrunner_db.cpython-37.pyc
 __pycache__/speedrunner_games_helper.cpython-37.pyc
 __pycache__/speedrunner_player_helper.cpython-37.pyc
 __pycache__/speedrunner_speedrun_helper.cpython-37.pyc
+data/speedruns.json
+data/games.json
+data/players.json

@@ -40,8 +40,22 @@ def add_or_update_game():
 
         return '<p>Successfully added game </p>'
     else:
-        return '<p>Unable to added game</p>'
+        return '<p>Unable to add game</p>'
 
+@app.route('/speedruns/<string:game_title>/<string:category>', methods=['GET'])
+def get_top_speedrun(game_title, category):
+    print('game_title: ', game_title, ' category: ', category)
+
+    speedruns = speedrun_helper.get_speedruns_by_game_and_category(databases['speedruns'], game_title, category)
+    sorted_speedruns = sorted(speedruns, key=lambda x: x['duration'])
+    
+    #only return player name and duration
+    for speedrun in sorted_speedruns: 
+        speedrun.pop('game_title', None)
+        speedrun.pop('category', None)
+        speedrun.pop('id', None)
+
+    return jsonify(sorted_speedruns)
     
 def initialize_databases():
     for name in consts.REQUIRED_DATABASES:

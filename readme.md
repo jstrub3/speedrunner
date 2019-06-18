@@ -17,7 +17,7 @@ data model:
 Speedrun
     id:string(uuid)
     player_name:string
-    duration:integer
+    duration:string (time)
     category:string
     game_title:title
 

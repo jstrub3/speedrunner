@@ -13,6 +13,21 @@ def get_speedruns_by_player_id(speedruns_database, player_id):
             return_speedruns.append(speedrun)
     return return_speedruns
 
+def get_speedruns_by_game(speedruns_database, game_title):
+    return_speedruns = []
+    for speedrun in speedruns_database['speedruns']:
+        if speedrun['game_title'] == game_title:
+            return_speedruns.append(speedrun)
+    return return_speedruns
+
+def get_speedruns_by_game_and_category(speedruns_database, game_title, category):
+    return_speedruns = []
+    for speedrun in speedruns_database['speedruns']:
+        if (speedrun['game_title'] == game_title
+        and speedrun['category'] == category):
+            return_speedruns.append(speedrun)
+    return return_speedruns
+
 def add_speedrun(speedruns_database, player_id, game_title, category, duration):
     for speedrun in speedruns_database['speedruns']:
         if (speedrun['player_id'] == player_id 

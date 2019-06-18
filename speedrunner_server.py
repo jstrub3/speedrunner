@@ -43,6 +43,7 @@ def add_or_update_game():
             request_categories = request.json['categories']
         games_helper.add_or_update_game(databases['games'], request.json['game_title'], request_categories)
 
+        db_utils.save_database(databases['games'], 'games')
         return '<p>Successfully added game </p>'
     else:
         return '<p>Unable to add game</p>'
@@ -61,8 +62,10 @@ def add_speedrun():
 
                     #speedrun id needs to be stored on the player as well
                     player_helper.add_or_update_player(databases['players'], request.json['player_name'], speedrun_id)
+                    db_utils.save_database(databases['players'], 'players')
+                    db_utils.save_database(databases['speedruns'], 'speedruns')
 
-        return '<p>Successfully added speedrun </p>'
+                    return '<p>Successfully added speedrun </p>'
     else:
         return '<p>Unable to add speedrun</p>'
 

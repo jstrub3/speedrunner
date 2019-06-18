@@ -1,0 +1,27 @@
+<h1>Speedrunner API Documentation</h1>
+<h2>Supported GET URIs:</h2>
+<ul>
+<li>
+<div>/games/titles/all - returns list of all game titles</div>
+</li>
+<li>/games/categories/all - returns list of all game categories for all titles</li>
+<li>/games/catgories/&lt;game_title&gt; - returns list of all categories for &lt;game_title&gt;</li>
+</ul>
+<h2>Supported POST URIs:</h2>
+<ul>
+<li>/games/add/ - adds game title and optional categories OR updates an existing game title with additional categories in the format
+<ul>
+<li>{"game_title":&lt;title&gt;, "categories":[&lt;categories&gt;]}</li>
+<li>{"game_title":&lt;title&gt;}</li>
+</ul>
+</li>
+<li>/games/categories/add/ - adds a list of categories to a game title in the format
+<ul>
+<li>{"game_title":&lt;title&gt;, "categories":[&lt;categories&gt;]}</li>
+</ul>
+</li>
+</ul>
+<h2>Notes:</h2>
+<ul>
+<li>&nbsp;</li>
+</ul>

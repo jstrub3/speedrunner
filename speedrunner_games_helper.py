@@ -34,15 +34,24 @@ def get_titles(games_database):
 def add_or_update_game(games_database, title, category):
     for game in games_database['games']:
         if game['game_title'] == title:
-            game['categories'].append(category)
+
+            if isinstance(category, str):
+                game['categories'].append(category)
+            elif isinstance(category, list): 
+                game['categories'].extend(category)
 
             #using list->set->list paradigm to remove duplicate categories
             game['categories'] = list(set(game['categories']))
-            return  
+            return
 
     #unable to find existing game with this title, create new
     new_game = {'game_title':title, 'categories':[]}
-    new_game['categories'].append(category)  
+    
+    if isinstance(category, str):
+        new_game['categories'].append(category)
+    elif isinstance(category, list): 
+        new_game['categories'].extend(category)
+
     games_database['games'].append(new_game)
     
 def delete_game(games_database, title):

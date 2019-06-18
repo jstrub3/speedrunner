@@ -8,6 +8,8 @@ pip install flask flask-jsonpify
 
 seed data in the form of a csv can be used to init the databases, place in root and define file name in speedrunner_consts.py
 
+recommended to use Poster extension on Chrome for testing POST requests
+
 start the server by running the following command on the terminal:
 python .\speedrunner_server.py
 

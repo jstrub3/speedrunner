@@ -19,7 +19,6 @@ def add_speedrun(speedruns_database, player_id, game_title, category, duration):
         and speedrun['game_title'] == game_title 
         and speedrun['category'] == category
         and speedrun['duration'] == duration):
-            #print('Duplicate speedrun detected for player ', player_id, ' on game ', game_title, ' ', category, ' for duration ', duration, '!')
             return None
     
     speedrun_id = str(uuid.uuid1())

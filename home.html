@@ -4,33 +4,68 @@
 <li>
 <div>/games/titles/all - returns list of all game titles</div>
 </li>
+</ul>
+<p>&nbsp;</p>
+<ul>
 <li>/games/categories/all - returns list of all game categories for all titles</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
 <li>/games/catgories/&lt;game_title&gt; - returns list of all categories for &lt;game_title&gt;</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
 <li>
-<div>
-<div>/speedruns/&lt;game_title&gt;/&lt;category&gt; - returns list of speedruns (player names and durations) for game_title and category sorted by fastest duration</div>
-</div>
+<div>/speedruns/games/&lt;game_title&gt;/ - returns list of speedruns (player names and durations) for game_title arranged by category and sorted by fastest duration</div>
+<ul>
+<li>Supports optional "/&lt;count&gt;" parameter to limit speedrun results</li>
+</ul>
 </li>
 </ul>
-<h2>Supported POST URIs:</h2>
+<p>&nbsp;</p>
 <ul>
-<li>/games/add/ - adds game title and optional categories OR updates an existing game title with additional categories in the format
+<li>/speedruns/games/&lt;game_title&gt;/&lt;category&gt; - returns list of speedruns (player names and durations) for game_title and category sorted by fastest duration
+<ul>
+<li>Supports optional "/&lt;count&gt;" parameter to limit speedrun results</li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li>/speedruns/players/&lt;player_name&gt;/&lt;category&gt; - returns list of speedruns (game title, category, and durations) for &lt;player_name&gt; sorted by fastest duration
+<ul>
+<li>Supports optional "/&lt;count&gt;" parameter to limit speedrun results</li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;</p>
+<h2>Supported POST URIs:</h2>
+<p>All POST requests require header of "Content-Type: application/json"</p>
+<ul>
+<li>/games/add/ - adds game title and optional categories OR updates an existing game title with additional categories in the format(s)
 <ul>
 <li>{"game_title":&lt;title&gt;, "categories":[&lt;categories&gt;]}</li>
 <li>{"game_title":&lt;title&gt;}</li>
 </ul>
 </li>
+</ul>
+<p>&nbsp;</p>
+<ul>
 <li>/games/categories/add/ - adds a list of categories to a game title in the format
 <ul>
 <li>{"game_title":&lt;title&gt;, "categories":[&lt;categories&gt;]}</li>
 </ul>
 </li>
+</ul>
+<p>&nbsp;</p>
+<ul>
 <li>/speedruns/add/ - adds a speedrun in the format
 <ul>
 <li>{"game_title":&lt;title&gt;, "category":&lt;category&gt;, "player_name":&lt;player_name&gt;, "duration":&lt;duration&gt;}</li>
 </ul>
 </li>
 </ul>
+<p>&nbsp;</p>
 <h2>Notes:</h2>
 <ul>
 <li>&nbsp;</li>

@@ -18,6 +18,10 @@ def home():
     response_content = open('home.html').read()
     return Response(response_content, mimetype='text/html')
 
+@app.route('/players/all', methods=['GET'])
+def players_all():
+    return jsonify(databases['players'])
+
 @app.route('/games/titles/all', methods=['GET'])
 def game_titles_all():    
     return jsonify(games_helper.get_titles(databases['games']))
@@ -31,7 +35,7 @@ def game_categories(game_title):
     return jsonify(games_helper.get_game_categories(databases['games'], game_title))
 
 @app.route('/games/add/', methods=['POST'])
-@app.route('/categories/add/', methods=['POST'])
+@app.route('/games/categories/add/', methods=['POST'])
 def add_or_update_game():
     request_categories = []
     if 'game_title' in request.json:
@@ -49,20 +53,46 @@ def add_speedrun():
         if 'category' in request.json:
             if 'duration' in request.json:
                 if 'player_name' in request.json:
-                    speedrun_helper.add_speedrun(databases['speedruns'], 
+                    speedrun_id = speedrun_helper.add_speedrun(databases['speedruns'], 
                     request.json['player_name'], 
                     request.json['game_title'], 
                     request.json['category'], 
                     request.json['duration'])
 
+                    #speedrun id needs to be stored on the player as well
+                    player_helper.add_or_update_player(databases['players'], request.json['player_name'], speedrun_id)
+
         return '<p>Successfully added speedrun </p>'
     else:
         return '<p>Unable to add speedrun</p>'
 
-@app.route('/speedruns/<string:game_title>/<string:category>', methods=['GET'])
-def get_top_speedrun(game_title, category):
-    print('game_title: ', game_title, ' category: ', category)
+@app.route('/speedruns/games/<string:game_title>/', defaults={'count': 0}, methods=['GET'])
+@app.route('/speedruns/games/<string:game_title>/<int:count>', methods=['GET'])
+def get_top_speedruns_by_category(game_title, count):
+    #Because we pop unwanted elements off the speedrun objects, we need to 
+    # deep copy the list upon retrieval
+    speedruns = copy.deepcopy(speedrun_helper.get_speedruns_by_game(databases['speedruns'], game_title))
+    sorted_speedruns = sorted(speedruns, key=lambda x: x['duration'])
+    
+    speedruns_by_category = {}
 
+    for speedrun in sorted_speedruns:
+        if speedrun['category'] not in speedruns_by_category:
+            speedruns_by_category[speedrun['category']] = []
+
+        speedruns_by_category[speedrun['category']].append(speedrun)
+        speedrun.pop('game_title', None)
+        speedrun.pop('category', None)
+
+    if count > 0:
+        for category in speedruns_by_category:
+            speedruns_by_category[category] = speedruns_by_category[category][0:count]
+
+    return jsonify(speedruns_by_category)
+
+@app.route('/speedruns/games/<string:game_title>/<string:category>/', defaults={'count': 0}, methods=['GET'])
+@app.route('/speedruns/games/<string:game_title>/<string:category>/<int:count>', methods=['GET'])
+def get_top_speedruns(game_title, category, count):
     #Because we pop unwanted elements off the speedrun objects, we need to 
     # deep copy the list upon retrieval
     speedruns = copy.deepcopy(speedrun_helper.get_speedruns_by_game_and_category(databases['speedruns'], game_title, category))
@@ -74,8 +104,29 @@ def get_top_speedrun(game_title, category):
         speedrun.pop('category', None)
         speedrun.pop('id', None)
 
-    return jsonify(sorted_speedruns)
+    if ( count > 0):
+        return jsonify(sorted_speedruns[0:count])
+    else:
+        return jsonify(sorted_speedruns)
     
+@app.route('/speedruns/players/<string:player_name>/', defaults={'count': 0}, methods=['GET'])
+@app.route('/speedruns/players/<string:player_name>/<int:count>', methods=['GET'])
+def get_speedruns_by_player(player_name, count):
+    #Because we pop unwanted elements off the speedrun objects, we need to 
+    # deep copy the list upon retrieval
+    speedruns = copy.deepcopy(speedrun_helper.get_speedruns_by_player_name(databases['speedruns'], player_name))
+    sorted_speedruns = sorted(speedruns, key=lambda x: x['duration'])
+    
+    #only return player name and duration
+    for speedrun in sorted_speedruns: 
+        speedrun.pop('id', None)
+        speedrun.pop('player_name', None)
+
+    if ( count > 0):
+        return jsonify(sorted_speedruns[0:count])
+    else:
+        return jsonify(sorted_speedruns)
+
 def initialize_databases():
     for name in consts.REQUIRED_DATABASES:
         databases[name] = db_utils.load_database(name)
@@ -89,16 +140,8 @@ def initialize_databases():
         if speedrun_id:
             player_helper.add_or_update_player(databases['players'], entry['Player'], speedrun_id)
 
-    #print('Updated games database:')
-    #db_utils.print_database(databases['games'])
     print('Valid games database: ', db_utils.validate_database_uniqueness(databases['games'], 'games', 'game_title'))
-
-    #print('Updated speedrun database:')
-    #db_utils.print_database(databases['speedruns'])
     print('Valid speedruns database: ', db_utils.validate_database_uniqueness(databases['speedruns'], 'speedruns', 'id'))
-
-    #print('Updated player database:')
-    #db_utils.print_database(databases['players'])
     print('Valid players database: ', db_utils.validate_database_uniqueness(databases['players'], 'players', 'player_name'))
 
     if len(csv_list) > 0:

@@ -1,3 +1,5 @@
+Trello board invite link: https://trello.com/invite/b/da5zQP2d/00359915a05a4a06023ff6c22356cf82/speedrunner-api
+
 Developer Requirements:
 
 install Python 3.7.3 from https://www.python.org/downloads/release/python-373/

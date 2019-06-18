@@ -6,6 +6,11 @@
 </li>
 <li>/games/categories/all - returns list of all game categories for all titles</li>
 <li>/games/catgories/&lt;game_title&gt; - returns list of all categories for &lt;game_title&gt;</li>
+<li>
+<div>
+<div>/speedruns/&lt;game_title&gt;/&lt;category&gt; - returns list of speedruns (player names and durations) for game_title and category sorted by fastest duration</div>
+</div>
+</li>
 </ul>
 <h2>Supported POST URIs:</h2>
 <ul>
@@ -18,6 +23,11 @@
 <li>/games/categories/add/ - adds a list of categories to a game title in the format
 <ul>
 <li>{"game_title":&lt;title&gt;, "categories":[&lt;categories&gt;]}</li>
+</ul>
+</li>
+<li>/speedruns/add/ - adds a speedrun in the format
+<ul>
+<li>{"game_title":&lt;title&gt;, "category":&lt;category&gt;, "player_name":&lt;player_name&gt;, "duration":&lt;duration&gt;}</li>
 </ul>
 </li>
 </ul>

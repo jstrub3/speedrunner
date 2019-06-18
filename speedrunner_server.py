@@ -1,3 +1,4 @@
+import copy
 import flask
 from flask import jsonify, request, Response
 import speedrunner_consts as consts
@@ -42,11 +43,29 @@ def add_or_update_game():
     else:
         return '<p>Unable to add game</p>'
 
+@app.route('/speedruns/add/', methods=['POST'])
+def add_speedrun():
+    if 'game_title' in request.json:
+        if 'category' in request.json:
+            if 'duration' in request.json:
+                if 'player_name' in request.json:
+                    speedrun_helper.add_speedrun(databases['speedruns'], 
+                    request.json['player_name'], 
+                    request.json['game_title'], 
+                    request.json['category'], 
+                    request.json['duration'])
+
+        return '<p>Successfully added speedrun </p>'
+    else:
+        return '<p>Unable to add speedrun</p>'
+
 @app.route('/speedruns/<string:game_title>/<string:category>', methods=['GET'])
 def get_top_speedrun(game_title, category):
     print('game_title: ', game_title, ' category: ', category)
 
-    speedruns = speedrun_helper.get_speedruns_by_game_and_category(databases['speedruns'], game_title, category)
+    #Because we pop unwanted elements off the speedrun objects, we need to 
+    # deep copy the list upon retrieval
+    speedruns = copy.deepcopy(speedrun_helper.get_speedruns_by_game_and_category(databases['speedruns'], game_title, category))
     sorted_speedruns = sorted(speedruns, key=lambda x: x['duration'])
     
     #only return player name and duration

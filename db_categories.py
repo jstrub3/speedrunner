@@ -1,5 +1,7 @@
 
 import sqlite3 as sql
+import logging
+speedrunner_log = logging.getLogger(__name__)
 
 def get_category_id(con, category):
     cur = con.cursor()
@@ -20,6 +22,8 @@ def add_category(con, category):
     result = cur.execute("SELECT id FROM Categories WHERE category = '" + category + "'").fetchone()
 
     if result == None:
+        speedrunner_log.info('Adding category:' + category)
+
         cur.execute("INSERT INTO Categories VALUES (?, ?)", (None, category) )
         con.commit()
         return cur.lastrowid
@@ -27,6 +31,8 @@ def add_category(con, category):
         return result[0]
 
 def add_categories(con, categories):
+    speedrunner_log.info('Adding categories:' + str(categories))
+
     entries = []
     for category in categories:
         entries.append((None, category))

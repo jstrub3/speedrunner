@@ -1,6 +1,8 @@
 import sqlite3 as sql
 import os
 import csv
+import logging
+speedrunner_log = logging.getLogger(__name__)
 
 import speedrunner_consts as consts
 
@@ -12,13 +14,16 @@ import db_speedruns as Speedruns
 
 def create_tables():
     with sql.connect(consts.DATABASE_PATH) as con:
-    
+        speedrunner_log.info('Creating tables...')
+
         con.execute('CREATE TABLE IF NOT EXISTS Games(id INTEGER PRIMARY KEY AUTOINCREMENT, game TEXT, CONSTRAINT game_unique UNIQUE (game))')
         con.execute('CREATE TABLE IF NOT EXISTS Categories(id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, CONSTRAINT category_unique UNIQUE (category))')
         con.execute('CREATE TABLE IF NOT EXISTS Players(id INTEGER PRIMARY KEY AUTOINCREMENT, player TEXT, CONSTRAINT player_unique UNIQUE (player))')
         con.execute('CREATE TABLE IF NOT EXISTS Speedruns(id INTEGER PRIMARY KEY AUTOINCREMENT, player_id INTEGER, game_id INTEGER, category_id INTEGER, duration TEXT, CONSTRAINT gamecategory_unique UNIQUE (game_id, category_id, duration, player_id))')
         con.execute('CREATE TABLE IF NOT EXISTS GamesCategories(id INTEGER PRIMARY KEY AUTOINCREMENT, game_id INTEGER, category_id INTEGER, CONSTRAINT gamecategory_unique UNIQUE (game_id, category_id))')
         con.commit()
+    speedrunner_log.info('Tables created successfully')
+
 
 def create_csv_entries(reader):
     keys = []
@@ -35,8 +40,9 @@ def create_csv_entries(reader):
     return entries
 
 def init_from_csv(csv_name):
-    create_tables()
     with open(csv_name, mode='r') as csv_file:
+        speedrunner_log.info('Parsing speedrun data from '+ csv_name)
+
         reader = csv.reader(csv_file)
         entries = create_csv_entries(reader)
 

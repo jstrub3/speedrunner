@@ -29,7 +29,10 @@ Start the server by running the following command on the terminal:
 ```bash
 python .\speedrunner_server.py
 ```
-##Data Model
+
+## Testing
+
+## Data Model
 The data is stored in a single Sqlite3 database, with the following table/column format:
 
 Games

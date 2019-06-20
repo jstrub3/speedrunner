@@ -1,8 +1,11 @@
 import flask
 from flask import jsonify, request, Response
-import speedrunner_consts as consts
 
+from datetime import datetime
+import logging as speedrunner_log
 import sqlite3 as sql
+
+import speedrunner_consts as consts
 import speedrunner_db as db
 import db_games as Games
 import db_categories as Categories
@@ -164,10 +167,18 @@ def get_speedruns_by_player(player_name, count):
         
         return jsonify(speedruns)    
 
-if __name__ == '__main__':
-    print ('Starting speedrunner_server')
+def init_logging(log, datetime):
+    log_file_name = './log/speedrunner_' + datetime.now().strftime("%d_%m_%Y_%H_%M_%S") + '.log'
+    speedrunner_log.basicConfig(filename=log_file_name, level=speedrunner_log.DEBUG, format = '%(asctime)s:%(levelname)s:%(message)s')
+    speedrunner_log.getLogger().addHandler(speedrunner_log.StreamHandler())
 
+if __name__ == '__main__':
+    init_logging(speedrunner_log, datetime)
+
+    speedrunner_log.info('Starting speedrunner_api server...')
+
+    db.create_tables()
     db.init_from_csv(consts.SEED_DATA_PATH)
 
     app.run(port='5002', use_reloader=False)
-    print ('Closing speedrunner_server')
+    speedrunner_log.info('Closing speedrunner_server...')

@@ -1,5 +1,7 @@
 
 import sqlite3 as sql
+import logging
+speedrunner_log = logging.getLogger(__name__)
 
 
 def get_game_id(con, game):
@@ -21,6 +23,8 @@ def add_game(con, game):
     result = cur.execute("SELECT id FROM Games WHERE game = '" + game + "'").fetchone()
 
     if result == None:
+        speedrunner_log.info('Adding game:' + game)
+        
         cur.execute("INSERT INTO Games VALUES (?, ?)", (None, game) )
         con.commit()
         return cur.lastrowid
@@ -28,6 +32,8 @@ def add_game(con, game):
         return result[0]
 
 def add_games(con, games):
+    speedrunner_log.info('Adding games:' + str(games))
+
     entries = []
     for game in games:
         entries.append((None, game))

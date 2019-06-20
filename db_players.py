@@ -1,5 +1,7 @@
 
 import sqlite3 as sql
+import logging
+speedrunner_log = logging.getLogger(__name__)
 
 def get_player_id(con, player):
     cur = con.cursor()
@@ -20,6 +22,8 @@ def add_player(con, player):
     result = cur.execute("SELECT id FROM Players WHERE player = ?", [player]).fetchone()
 
     if result == None:
+        speedrunner_log.info('Adding player:' + player)
+        
         cur.execute("INSERT INTO Players VALUES (?, ?)", (None, player) )
         con.commit()
         return cur.lastrowid
@@ -27,6 +31,8 @@ def add_player(con, player):
         return result[0]
 
 def add_players(con, players):
+    speedrunner_log.info('Adding players:' + str(players))
+
     entries = []
     for player in players:
         entries.append((None, player))

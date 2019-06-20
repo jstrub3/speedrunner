@@ -1,19 +1,24 @@
 <h1>Speedrunner API Documentation</h1>
+<p>Version 0.2 - now with Sqlite3 database.</p>
 <h2>Supported GET URIs:</h2>
 <ul>
 <li>
 <div>/games/titles/all - returns list of all game titles</div>
 </li>
 </ul>
-<p>&nbsp;</p>
+<p style="padding-left: 60px;">return format:</p>
+<p style="padding-left: 60px;">[<br /> "The Legend of Zelda: Ocarina of Time", <br />...<br /> "Hollow Knight"<br />]</p>
 <ul>
 <li>/games/categories/all - returns list of all game categories for all titles</li>
 </ul>
-<p>&nbsp;</p>
+<p style="padding-left: 60px;">return format:</p>
+<p style="padding-left: 60px;">[<br /> "Inbounds", <br />...<br /> "All Bosses"<br />]</p>
 <ul>
 <li>/games/catgories/&lt;game_title&gt; - returns list of all categories for &lt;game_title&gt;</li>
 </ul>
-<p>&nbsp;</p>
+<p style="padding-left: 60px;">return format:</p>
+<p style="padding-left: 60px;">[<br /> "Inbounds",</p>
+<p style="padding-left: 60px;">...<br /> "Out of Bounds"<br />]</p>
 <ul>
 <li>
 <div>/speedruns/games/&lt;game_title&gt;/ - returns list of speedruns (player names and durations) for game_title arranged by category and sorted by fastest duration</div>
@@ -22,7 +27,8 @@
 </ul>
 </li>
 </ul>
-<p>&nbsp;</p>
+<p style="padding-left: 60px;">return format:</p>
+<p style="padding-left: 60px;">{<br /> "Any%": [<br /> {<br /> "duration": "0:00:42", <br /> "player": "S. P. Lunker"<br /> }, <br />...<br /> {<br /> "duration": "0:13:37", <br /> "player": "ToadKing"<br /> }<br /> ], <br /> "Hell%": [<br /> {<br /> "duration": "0:02:54", <br /> "player": "S. P. Lunker"<br /> }, <br />...&nbsp;<br /> {<br /> "duration": "0:13:37", <br /> "player": "ToadKing"<br /> }<br /> ]<br />}</p>
 <ul>
 <li>/speedruns/games/&lt;game_title&gt;/&lt;category&gt; - returns list of speedruns (player names and durations) for game_title and category sorted by fastest duration
 <ul>
@@ -30,7 +36,8 @@
 </ul>
 </li>
 </ul>
-<p>&nbsp;</p>
+<p style="padding-left: 60px;">&nbsp;return format:</p>
+<p style="padding-left: 60px;">[<br /> {<br /> "duration": "0:02:54", <br /> "player": "S. P. Lunker"<br /> }, <br />...<br /> {<br /> "duration": "0:13:37", <br /> "player": "ToadKing"<br /> }<br />]</p>
 <ul>
 <li>/speedruns/players/&lt;player_name&gt;/&lt;category&gt; - returns list of speedruns (game title, category, and durations) for &lt;player_name&gt; sorted by fastest duration
 <ul>
@@ -38,7 +45,7 @@
 </ul>
 </li>
 </ul>
-<p>&nbsp;</p>
+<p style="padding-left: 60px;">&nbsp;[<br /> {<br /> "category": "Any%", <br /> "duration": "0:13:37", <br /> "game_title": "Spelunky"<br /> }, <br />...<br /> {<br /> "category": "Any%", <br /> "duration": "0:19:42", <br /> "game_title": "The Legend of Zelda: Ocarina of Time"<br /> }<br />]</p>
 <h2>Supported POST URIs:</h2>
 <p>All POST requests require header of "Content-Type: application/json"</p>
 <ul>

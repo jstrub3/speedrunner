@@ -1,3 +1,3 @@
 IS_DEBUG = True
-REQUIRED_DATABASES = ['games', 'speedruns', 'players']
-SEED_DATA_FILENAME = 'seed_data'
+SEED_DATA_PATH = './data/seed_data.csv'
+DATABASE_PATH = './data/speedrunner_database.db'

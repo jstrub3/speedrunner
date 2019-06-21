@@ -5,8 +5,7 @@ speedrunner_log = logging.getLogger(__name__)
 
 def get_categories_by_game_id(con, game_id):
         cur = con.cursor()
-        rows = cur.execute("SELECT category_id FROM GamesCategories WHERE game_id = '" + str(game_id) + "'").fetchall()
-        print(rows)
+        rows = cur.execute("SELECT category_id FROM GamesCategories WHERE game_id = '" + str(game_id) + "' ORDER BY category_id DESC").fetchall()
         return [category_id[0] for category_id in rows]
 
 def add_game_category_by_id(con, game_id, category_id):

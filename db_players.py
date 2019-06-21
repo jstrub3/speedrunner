@@ -13,7 +13,7 @@ def get_player(con, id):
 
 def get_players(con):
     cur = con.cursor()
-    return [player[0] for player in cur.execute("SELECT player FROM Players").fetchall()]
+    return [player[0] for player in cur.execute("SELECT player FROM Players ORDER BY player").fetchall()]
 
 def add_player(con, player):
     cur = con.cursor()
@@ -23,7 +23,7 @@ def add_player(con, player):
 
     if result == None:
         speedrunner_log.info('Adding player:' + player)
-        
+
         cur.execute("INSERT INTO Players VALUES (?, ?)", (None, player) )
         con.commit()
         return cur.lastrowid

@@ -13,7 +13,7 @@ def get_category(con, id):
 
 def get_categories(con):
     cur = con.cursor()
-    return [category[0] for category in cur.execute("SELECT category FROM Categories").fetchall()]
+    return [category[0] for category in cur.execute("SELECT category FROM Categories ORDER BY category").fetchall()]
 
 def add_category(con, category):
     cur = con.cursor()

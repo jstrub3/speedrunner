@@ -12,8 +12,12 @@ import db_games_categories as Games_Categories
 import db_players as Players
 import db_speedruns as Speedruns
 
-def create_tables():
-    with sql.connect(consts.DATABASE_PATH) as con:
+def clear_db(db_path):
+    if os.path.isfile(db_path):
+        os.remove(db_path)
+
+def create_tables(db_path):
+    with sql.connect(db_path) as con:
         speedrunner_log.info('Creating tables...')
 
         con.execute('CREATE TABLE IF NOT EXISTS Games(id INTEGER PRIMARY KEY AUTOINCREMENT, game TEXT, CONSTRAINT game_unique UNIQUE (game))')
@@ -25,7 +29,7 @@ def create_tables():
     speedrunner_log.info('Tables created successfully')
 
 
-def create_csv_entries(reader):
+def create_csv_entries(reader, db_path):
     keys = []
     for key in next(reader, None):
         keys.append(key)
@@ -39,15 +43,15 @@ def create_csv_entries(reader):
         entries.append(entry)
     return entries
 
-def init_from_csv(csv_name):
+def init_from_csv(csv_name, db_path):
     with open(csv_name, mode='r') as csv_file:
         speedrunner_log.info('Parsing speedrun data from '+ csv_name)
 
         reader = csv.reader(csv_file)
-        entries = create_csv_entries(reader)
+        entries = create_csv_entries(reader, db_path)
 
         #Parse entries and add to the database
-        with sql.connect(consts.DATABASE_PATH) as con:
+        with sql.connect(db_path) as con:
             games = set()
             categories = set()
             players = set()

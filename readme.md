@@ -31,6 +31,13 @@ python .\speedrunner_server.py
 ```
 
 ## Testing
+Speedrunner API includes limited functional tests in test_speedrunner.py using Python's built-in unit testing framework 'unittest'.
+
+Tests can be run by running the following command on the terminal:
+
+```bash
+python -m unittest
+```
 
 ## Data Model
 The data is stored in a single Sqlite3 database, with the following table/column format:

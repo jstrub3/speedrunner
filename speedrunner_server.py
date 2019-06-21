@@ -16,6 +16,8 @@ import db_speedruns as Speedruns
 app = flask.Flask(__name__)
 app.config["DEBUG"] = consts.IS_DEBUG
 
+database_path = consts.DATABASE_PATH
+
 #Home page
 @app.route('/', methods=['GET'])
 def home():
@@ -25,28 +27,28 @@ def home():
 #Get all players
 @app.route('/players/all', methods=['GET'])
 def players_all():
-    with sql.connect(consts.DATABASE_PATH) as con:
+    with sql.connect(database_path) as con:
         players = Players.get_players(con)
         return jsonify(players)
 
 #Get all games
 @app.route('/games/titles/all', methods=['GET'])
 def game_titles_all():    
-    with sql.connect(consts.DATABASE_PATH) as con:
+    with sql.connect(database_path) as con:
         games = Games.get_games(con)
         return jsonify(games)
 
 #Get all categories
 @app.route('/games/categories/all', methods=['GET'])
 def game_categories_all():
-    with sql.connect(consts.DATABASE_PATH) as con:
+    with sql.connect(database_path) as con:
         categories = Categories.get_categories(con)
         return jsonify(categories)
 
 #Get all categories for a game
 @app.route('/games/categories/<string:game_title>', methods=['GET'])
 def game_categories(game_title):
-    with sql.connect(consts.DATABASE_PATH) as con:
+    with sql.connect(database_path) as con:
         game_id = Games.get_game_id(con, game_title)
         category_ids = Games_Categories.get_categories_by_game_id(con, game_id)
 
@@ -61,7 +63,7 @@ def game_categories(game_title):
 @app.route('/games/add/', methods=['POST'])
 @app.route('/games/categories/add/', methods=['POST'])
 def add_or_update_game():
-    with sql.connect(consts.DATABASE_PATH) as con:
+    with sql.connect(database_path) as con:
         if 'game_title' in request.json:
             game_id = Games.add_game(con, request.json['game_title'])
             if 'categories' in request.json:
@@ -78,7 +80,7 @@ def add_speedrun():
         if 'category' in request.json:
             if 'duration' in request.json:
                 if 'player_name' in request.json:
-                    with sql.connect(consts.DATABASE_PATH) as con:
+                    with sql.connect(database_path) as con:
                         game_id = Games.add_game(con, request.json['game_title'])
                         category_id = Categories.add_category(con, request.json['category'])
                         player_id = Players.add_player(con, request.json['player_name'])
@@ -97,7 +99,7 @@ def add_speedrun():
 @app.route('/speedruns/games/<string:game_title>/<int:count>', methods=['GET'])
 def get_top_speedruns_by_game_by_category(game_title, count):
 
-    with sql.connect(consts.DATABASE_PATH) as con:
+    with sql.connect(database_path) as con:
         game_id = Games.get_game_id(con, game_title)
         speedruns_tuple = Speedruns.get_speedruns_by_game_id(con, game_id)
 
@@ -126,7 +128,7 @@ def get_top_speedruns_by_game_by_category(game_title, count):
 @app.route('/speedruns/games/<string:game_title>/<string:category>/<int:count>', methods=['GET'])
 def get_top_speedruns_by_game_and_category(game_title, category, count):
 
-    with sql.connect(consts.DATABASE_PATH) as con:
+    with sql.connect(database_path) as con:
         game_id = Games.get_game_id(con, game_title)
         category_id = Categories.get_category_id(con, category)
 
@@ -149,7 +151,7 @@ def get_top_speedruns_by_game_and_category(game_title, category, count):
 @app.route('/speedruns/players/<string:player_name>/', defaults={'count': -1}, methods=['GET'])
 @app.route('/speedruns/players/<string:player_name>/<int:count>', methods=['GET'])
 def get_speedruns_by_player(player_name, count):
-    with sql.connect(consts.DATABASE_PATH) as con:
+    with sql.connect(database_path) as con:
         player_id = Players.get_player_id(con, player_name)
         speedruns_tuple = Speedruns.get_speedruns_by_player_id(con, player_id)
 
@@ -177,8 +179,8 @@ if __name__ == '__main__':
 
     speedrunner_log.info('Starting speedrunner_api server...')
 
-    db.create_tables()
-    db.init_from_csv(consts.SEED_DATA_PATH)
+    db.create_tables(database_path)
+    db.init_from_csv(consts.SEED_DATA_PATH, database_path)
 
     app.run(port='5002', use_reloader=False)
     speedrunner_log.info('Closing speedrunner_server...')

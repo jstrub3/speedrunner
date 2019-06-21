@@ -14,7 +14,7 @@ def get_game(con, id):
 
 def get_games(con):
     cur = con.cursor()
-    return [game[0] for game in cur.execute("SELECT game FROM Games").fetchall()]
+    return [game[0] for game in cur.execute("SELECT game FROM Games ORDER BY game").fetchall()]
 
 def add_game(con, game):
     cur = con.cursor()

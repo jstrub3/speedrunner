@@ -1,0 +1,13 @@
+Game,Categories,Player,Duration
+Game_1,Cat_1,Player_1,1:11:11
+Game_1,Cat_1,Player_2,1:11:12
+Game_1,Cat_1,Player_3,1:11:13
+Game_1,Cat_2,Player_1,1:11:21
+Game_1,Cat_2,Player_2,1:11:22
+Game_1,Cat_2,Player_3,1:11:23
+Game_2,Cat_1,Player_4,1:11:14
+Game_2,Cat_1,Player_4,1:11:14
+Game_2,Cat_1,Player_5,1:11:15
+Game_3,Cat_7,Player_5,1:11:25
+Game_3,Cat_8,Player_6,1:11:26
+Game_3,Cat_7,Player_6,1:11:27
